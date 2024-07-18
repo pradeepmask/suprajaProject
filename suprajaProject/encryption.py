@@ -37,7 +37,6 @@ def encrypt_file(filepath, key):
 
 def decrypt_file(filepath, key):
     keyo=generate_key(key)
-    print(keyo)
     fernet = Fernet(keyo)
     try:
         with open(filepath, 'rb') as file:
