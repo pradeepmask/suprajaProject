@@ -36,17 +36,20 @@ def store_file_info(filepath, key, file_id):
     conn.close()
 
 
-def encrypt_and_send(filepath, receiver_email):
+def encrypt_and_send(filepath, receiver_email,password):
     if not filepath:
         messagebox.showerror("Error", "Please select a file to encrypt.")
         return
     if not receiver_email:
         messagebox.showerror("Error", "Please enter the receiver email.")
         return
-    key = generate_key()
+    if not password:
+        messagebox.showerror("Error", "Please enter the password.")
+        return
+    key = generate_key(password)
     file_id = str(uuid.uuid4())
     encrypt_file(filepath, key)
-    send_key("developermask140@gmail.com", receiver_email, key.decode(), file_id)
+    send_key("developermask140@gmail.com", receiver_email, password, file_id)
     store_file_info(filepath, key.decode(), file_id)
     messagebox.showinfo("Success", "File encrypted and key sent successfully!")
     refresh_page()
@@ -186,9 +189,13 @@ def run_app():
     receiver_email_entry_enc = ttk.Entry(upload_box, width=40)
     receiver_email_entry_enc.grid(row=1, column=1, pady=5)
 
+    ttk.Label(upload_box, text="Password:").grid(row=2, column=0, pady=10, padx=10)
+    password_entry_enc = ttk.Entry(upload_box, width=40)
+    password_entry_enc.grid(row=2, column=1, pady=5)
+
     ttk.Button(upload_box, text="Encrypt and Send Key",
-               command=lambda: encrypt_and_send(filepath_entry_enc.get(), receiver_email_entry_enc.get())).grid(row=2,
-                                                                                                                column=0,
+               command=lambda: encrypt_and_send(filepath_entry_enc.get(), receiver_email_entry_enc.get(),password_entry_enc.get())).grid(row=2,
+                                                                                                                column=4,
                                                                                                                 columnspan=3,
                                                                                                                 pady=20)
 
