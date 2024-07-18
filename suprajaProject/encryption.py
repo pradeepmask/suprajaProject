@@ -10,7 +10,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
 
 def generate_key(password):
-    salt=os.urandom(16)
+    salt=b'CoHofD0IM6Yl9I6UytCPN7dSAiptK7CefpDzk1TB7xw='
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -19,6 +19,7 @@ def generate_key(password):
         backend=default_backend()
     )
     key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
+    
     return key
     
 
@@ -35,8 +36,9 @@ def encrypt_file(filepath, key):
         messagebox.showerror("Error", f"Encryption failed: {str(e)}")
 
 def decrypt_file(filepath, key):
-    keys=generate_key(key)
-    fernet = Fernet(keys)
+    keyo=generate_key(key)
+    print(keyo)
+    fernet = Fernet(keyo)
     try:
         with open(filepath, 'rb') as file:
             encrypted_data = file.read()

@@ -164,7 +164,7 @@ def run_app():
             return
 
         try:
-            decrypt_file(filepath, key.encode())
+            decrypt_file(filepath, key)
             decrypted_file_label.config(text=f"Decrypted File: {filepath}")
             decrypted_key_label.config(text=f"Decryption Key: {key}")
             download_button.config(state="normal", command=lambda: download_file(filepath))
@@ -174,6 +174,19 @@ def run_app():
             messagebox.showerror("Error", str(e))
 
     # Landing Frame UI
+    # root = tk.Tk()
+    # root.title("File Encryption Tool")
+    # root.geometry("600x400")  # Set initial window size
+
+# Configure styles for ttk widgets
+    style = ttk.Style()
+    style.configure('TLabel', background='#f0f0f0')  # Background color for labels
+    style.configure('TFrame', background='#e0e0e0')  # Background color for frames
+    style.configure('TButton', background='#4CAF50')  # Background color for buttons
+    style.configure('TEntry', background='white')  # Background color for entry widgets
+
+# Create a frame for the main content
+    
     ttk.Label(landing_frame, text="File Encryption Tool", font=("Helvetica", 16)).pack(pady=20)
 
     upload_box = ttk.LabelFrame(landing_frame, text="Encrypt and Send", padding=(10, 5))
