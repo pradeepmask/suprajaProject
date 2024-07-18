@@ -194,8 +194,8 @@ def run_app():
     password_entry_enc.grid(row=2, column=1, pady=5)
 
     ttk.Button(upload_box, text="Encrypt and Send Key",
-               command=lambda: encrypt_and_send(filepath_entry_enc.get(), receiver_email_entry_enc.get(),password_entry_enc.get())).grid(row=2,
-                                                                                                                column=4,
+               command=lambda: encrypt_and_send(filepath_entry_enc.get(), receiver_email_entry_enc.get(),password_entry_enc.get())).grid(row=6,
+                                                                                                                column=0,
                                                                                                                 columnspan=3,
                                                                                                                 pady=20)
 
