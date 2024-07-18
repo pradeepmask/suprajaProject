@@ -36,20 +36,17 @@ def store_file_info(filepath, key, file_id):
     conn.close()
 
 
-def encrypt_and_send(filepath, receiver_email,password):
+def encrypt_and_send(filepath, receiver_email):
     if not filepath:
         messagebox.showerror("Error", "Please select a file to encrypt.")
         return
     if not receiver_email:
         messagebox.showerror("Error", "Please enter the receiver email.")
         return
-    if not password:
-        messagebox.showerror("Error", "Please enter the password.")
-        return
-    key = generate_key(password)
+    key = generate_key()
     file_id = str(uuid.uuid4())
     encrypt_file(filepath, key)
-    send_key("developermask140@gmail.com", receiver_email, password, file_id)
+    send_key("developermask140@gmail.com", receiver_email, key.decode(), file_id)
     store_file_info(filepath, key.decode(), file_id)
     messagebox.showinfo("Success", "File encrypted and key sent successfully!")
     refresh_page()
@@ -164,7 +161,7 @@ def run_app():
             return
 
         try:
-            decrypt_file(filepath, key)
+            decrypt_file(filepath, key.encode())
             decrypted_file_label.config(text=f"Decrypted File: {filepath}")
             decrypted_key_label.config(text=f"Decryption Key: {key}")
             download_button.config(state="normal", command=lambda: download_file(filepath))
@@ -174,19 +171,6 @@ def run_app():
             messagebox.showerror("Error", str(e))
 
     # Landing Frame UI
-    # root = tk.Tk()
-    # root.title("File Encryption Tool")
-    # root.geometry("600x400")  # Set initial window size
-
-# Configure styles for ttk widgets
-    style = ttk.Style()
-    style.configure('TLabel', background='#f0f0f0')  # Background color for labels
-    style.configure('TFrame', background='#e0e0e0')  # Background color for frames
-    style.configure('TButton', background='#4CAF50')  # Background color for buttons
-    style.configure('TEntry', background='white')  # Background color for entry widgets
-
-# Create a frame for the main content
-    
     ttk.Label(landing_frame, text="File Encryption Tool", font=("Helvetica", 16)).pack(pady=20)
 
     upload_box = ttk.LabelFrame(landing_frame, text="Encrypt and Send", padding=(10, 5))
@@ -202,12 +186,8 @@ def run_app():
     receiver_email_entry_enc = ttk.Entry(upload_box, width=40)
     receiver_email_entry_enc.grid(row=1, column=1, pady=5)
 
-    ttk.Label(upload_box, text="Password:").grid(row=2, column=0, pady=10, padx=10)
-    password_entry_enc = ttk.Entry(upload_box, width=40)
-    password_entry_enc.grid(row=2, column=1, pady=5)
-
     ttk.Button(upload_box, text="Encrypt and Send Key",
-               command=lambda: encrypt_and_send(filepath_entry_enc.get(), receiver_email_entry_enc.get(),password_entry_enc.get())).grid(row=6,
+               command=lambda: encrypt_and_send(filepath_entry_enc.get(), receiver_email_entry_enc.get())).grid(row=2,
                                                                                                                 column=0,
                                                                                                                 columnspan=3,
                                                                                                                 pady=20)
