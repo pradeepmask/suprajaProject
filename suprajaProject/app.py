@@ -8,7 +8,7 @@ import os
 import uuid
 import sqlite3
 import hashlib
-
+import webbrowser
 
 def get_system_id():
     return hashlib.sha256(str(uuid.getnode()).encode()).hexdigest()
@@ -91,7 +91,8 @@ def download_file(filepath):
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
-
+def open_details_link():
+    webbrowser.open("https://details-supraja.vercel.app/")
 def refresh_page():
     # Reset encryption fields
     filepath_entry_enc.delete(0, tk.END)
@@ -213,7 +214,7 @@ def run_app():
 
     download_button = ttk.Button(landing_frame, text="Download File", state="disabled")
     download_button.pack(pady=20)
-
+    ttk.Button(landing_frame, text="See Details", command=open_details_link).pack(pady=10)
     ttk.Button(landing_frame, text="Exit", command=root.destroy).pack(pady=20)
 
     initialize_db()
